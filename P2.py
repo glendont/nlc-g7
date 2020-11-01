@@ -1,5 +1,3 @@
-# Author : Vaibhaw Raj
-# Created on : Sun, Feb 11 2018
 # Description : Entry point for Simple Question Answer Chatbot
 # Program Argument :
 #		datasetName = "Name of dataset text file" eg. "Beyonce.txt"
@@ -46,12 +44,12 @@ def main(datasetName, use_word_embeddings):
 
 	print("Bot> Hey! I am ready. Ask me Anything!")
 	print("Bot> You can say me Bye anytime you want")
-
+	print("Bot> If you feel that a response from me is wrong, say 'WRONG' ")
 	# Greet Pattern
 	greetPattern = re.compile("^\ *((hi+)|((good\ )?morning|evening|afternoon)|(he((llo)|y+)))\ *$",re.IGNORECASE)
 
 	# Trigger "Wrong output"
-	wrongOutput = re.compile("^\ *((hi+)|((wrong\ )?wrong|wrong|wrong)|(he((llo)|y+)))\ *$",re.IGNORECASE)
+	wrongOutput = re.compile("^\ *((hi+)|((Wrong\ )?wrong|WRONG|wrong)|(he((llo)|y+)))\ *$",re.IGNORECASE)
 
 
 	isActive = True
@@ -65,10 +63,29 @@ def main(datasetName, use_word_embeddings):
 			response = "Hello!"
 
 		## Trigger Wrong Output
+		## Insert code here to handle trigger wrong output
 		elif wrongOutput.findall(userQuery):
-			response = "Triggering Wrong Output Now...!"
+			collected_dataset=""
+			isActiveTraining = True
+			print("Please provide responses to improve the bot...")
 
-		## Trigger xxx 
+			while isActiveTraining:
+				userQuery = input("Data input to improve bot (x to cancel) > ")
+				collected_dataset = collected_dataset + "\t" + userQuery
+
+				if (userQuery=="x"):
+					response = "Training commerencing now..."
+					isActiveTraining=False
+
+			text_file = open("dataset/user_provided_dataset.txt","wt")
+			n = text_file.write(collected_dataset)
+			text_file.close()
+
+			print("Dataset: " + collected_dataset)
+			
+	
+
+
 		elif userQuery.strip().lower() == "bye":
 			response = "Bye Bye!"
 			isActive = False
