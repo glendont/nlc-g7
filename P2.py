@@ -5,6 +5,7 @@
 #		$ python3 P2.py dataset/IPod
 
 from DocumentRetrievalModel import DocumentRetrievalModel as DRM
+
 from ProcessedQuestion import ProcessedQuestion as PQ
 from DocumentRetrievalModelWM import DocumentRetrievalModelWM as DRMWM
 from ProcessedQuestionWM import ProcessedQuestionWM as PQWM
@@ -16,7 +17,7 @@ import nltk
 nltk.download('averaged_perceptron_tagger')
 
 def main(datasetName, use_word_embeddings):
-	print("Bot> Hey there, my name is xxx! Please hold while I load up my dependencies :)")
+	print("Bot> Hey there, my name is WikiV2! Please hold while I load up my dependencies :)")
 	
 	# Loading Dataset
 	try:
@@ -43,7 +44,7 @@ def main(datasetName, use_word_embeddings):
 		drm = DRM(paragraphs, True, True)
 
 	print("Bot> Hey! I am ready. Ask me Anything!")
-	print("Bot> You can say me Bye anytime you want")
+	print("Bot> You can say 'Bye Bye' anytime you want")
 	print("Bot> If you feel that a response from me is wrong, say 'WRONG' ")
 	# Greet Pattern
 	greetPattern = re.compile("^\ *((hi+)|((good\ )?morning|evening|afternoon)|(he((llo)|y+)))\ *$",re.IGNORECASE)
@@ -70,18 +71,22 @@ def main(datasetName, use_word_embeddings):
 			print("Please provide responses to improve the bot...")
 
 			while isActiveTraining:
-				userQuery = input("Data input to improve bot (x to cancel) > ")
-				collected_dataset = collected_dataset + "\t" + userQuery
+				userQuery = input("Enter your question > ")
+				numQuery = input("Enter the number of correct responses you would like to provide for the above question > ")
+				answer_array=[]
 
-				if (userQuery=="x"):
-					response = "Training commerencing now..."
-					isActiveTraining=False
+				for i in range(1,int(numQuery)+1):
+					answer = input("Enter correct response " + str(i) + " > ")
+
+				isActiveTraining = False
+				collected_dataset = collected_dataset + "\t" + userQuery
+				response = "Thanks for your input!"
 
 			text_file = open("dataset/user_provided_dataset.txt","wt")
 			n = text_file.write(collected_dataset)
 			text_file.close()
 
-			print("Dataset: " + collected_dataset)
+			print("Additional datapoints collected.")
 			
 	
 
